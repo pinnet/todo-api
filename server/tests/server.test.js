@@ -9,11 +9,11 @@ const todos = [
   { text:'Second test todo'}
 ];
 
-beforeEach((done) => {
-  Todo.remove({}).then(() => {
-    return Todo.insertMany(todos);
-  }).then(() => done());
-});
+// beforeEach((done) => {
+//   Todo.remove({}).then(() => {
+//     return Todo.insertMany(todos);
+//   }).then(() => done());
+// });
 
 describe('POST /todos', () => {
   it('should create a new todo', (done) => {

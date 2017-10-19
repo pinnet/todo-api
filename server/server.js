@@ -11,7 +11,7 @@ var {Todo} = require('./models/Todo.js');
 var {User} = require('./models/User.js'); 
 var {authenticate} = require('./middleware/authenticate.js');
 
-var app = express();
+ var app = express();
 const port = process.env.PORT;
 
 app.use(bodyParser.json());

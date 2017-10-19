@@ -1,5 +1,5 @@
-var env = process.env.NODE_ENV;
-console.log(process.env.NODE_ENV);
+require('./config/config.js');
+
 const {ObjectID} = require('mongodb');
 const _ = require('lodash');
 const express = require('express');
@@ -10,7 +10,7 @@ var {Todo} = require('./models/Todo.js');
 var {User} = require('./models/User.js');
 
 var app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
 app.use(bodyParser.json());
 

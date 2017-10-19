@@ -96,6 +96,16 @@ app.post('/users',(req,res) => {
     }) 
 });
 
+app.get('/users/me', (req,res) => {
+    var token = req.header('x-auth');
+    //console.log(token);
+    User.findByToken(token).then((user) => {
+        if(!user){}
+
+        res.send(user);
+    });
+});
+
 
 if(!module.parent){ 
 app.listen(port, () => {

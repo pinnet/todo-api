@@ -1,5 +1,6 @@
 require('./config/config.js');
 
+
 const {ObjectID} = require('mongodb');
 const _ = require('lodash');
 const express = require('express');
@@ -8,6 +9,7 @@ const bodyParser = require('body-parser');
 var {mongoose} = require('./db/mongoose.js');
 var {Todo} = require('./models/Todo.js');
 var {User} = require('./models/User.js'); 
+var {authenticate} = require('./middleware/authenticate.js');
 
 var app = express();
 const port = process.env.PORT;
@@ -96,13 +98,20 @@ app.post('/users',(req,res) => {
     }) 
 });
 
+module.exports = {authenticate};
+
 app.get('/users/me', (req,res) => {
     var token = req.header('x-auth');
     //console.log(token);
     User.findByToken(token).then((user) => {
-        if(!user){}
-
-        res.send(user);
+       if(!user){
+           return Promise.reject();
+        }
+        
+      res.send(user);
+    
+    }).catch ((e) => {
+        res.status(401).send();
     });
 });
 

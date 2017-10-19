@@ -231,7 +231,7 @@ describe('POST /users',() => {
 describe('GET /users/me',() => {
   
     it('should return user if authenticated',(done) => {
-      //console.log(users[0].tokens[0].token);
+     
    request(app)
           .get('/users/me')
           .set('x-auth', users[0].tokens[0].token)
@@ -250,7 +250,30 @@ describe('GET /users/me',() => {
       expect(res.body).toEqual({});
     })
       .end(done)
-      
-
   });
+});
+describe('POST /users/login',() => {
+  
+    it('should login user and return auth token',(done) => {
+      
+   request(app)
+          .post('/users/login')
+          .send({ email: users[0].email, password: users[0].password })
+          .expect(200)
+          .expect((res) => {
+             expect(res.body._id).toBe(users[0]._id.toHexString());
+             expect(res.body.email).toBe(users[0].email);
+          })
+          .end(done)
+    });
+    it('should reject invalid login',(done) => {
+       request(app)
+        .post('/users/login')
+        .send({email:users[0].email,password:'XYZABCDERS'})
+        .expect(400)
+        .expect((res) => {
+            expect(res.body).toEqual({});
+        })
+        .end(done);
+    });
 });

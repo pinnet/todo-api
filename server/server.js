@@ -98,7 +98,7 @@ app.post('/users',(req,res) => {
     }) 
 });
 
-module.exports = {authenticate};
+
 
 app.get('/users/me', (req,res) => {
     var token = req.header('x-auth');

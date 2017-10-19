@@ -1,3 +1,5 @@
+var env = process.env.NODE_ENV;
+console.log(process.env.NODE_ENV);
 const {ObjectID} = require('mongodb');
 const _ = require('lodash');
 const express = require('express');

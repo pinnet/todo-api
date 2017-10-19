@@ -7,7 +7,12 @@ const {Todo} = require('./../models/Todo.js');
 
 const todos = [
   { _id: new ObjectID(), text: 'First test todo'},
-  { _id: new ObjectID(), text:'Second test todo'}
+  { 
+    _id: new ObjectID(), 
+    text:'Second test todo',
+    completed: true,
+    completedAt: 333
+  }
 ];
 
 beforeEach((done) => {
@@ -130,4 +135,49 @@ describe('DELETE /todos/:id',(done) => {
 
 
 });
+describe('PATCH /todos/:id',(done) => {
 
+  it('should update todo ',(done) => {
+    var hexId = todos[0]._id.toHexString();
+    var post = { 
+      text: 'Changed Text',
+      completed: true
+  }
+ request(app)
+        .patch(`/todos/${hexId}`)
+        .send(post)
+        .expect(200)
+        .expect((res) => {
+           expect(res.body.todo.text).toBe(post.text);
+           expect(res.body.todo.completed).toBe(true);
+           expect(res.body.todo.completedAt).toBeA('number');
+        })
+        .end(done)
+  });
+  it('should clear completedAt when todo is not completed',(done) => {
+    var hexId = todos[1]._id.toHexString();
+    var post = { 
+      completed: false
+  }
+ request(app)
+        .patch(`/todos/${hexId}`)
+        .send(post)
+        .expect(200)
+        .expect((res) => {
+           expect(res.body.todo.completed).toBe(false);
+           expect(res.body.todo.completedAt).toNotExist();
+        })
+        .end(done);
+  });
+  it('should return 404 incorrect ID',(done) => {
+    var hexId = '12345ABCD';
+    var post = { 
+      completed: false
+  }
+ request(app)
+        .patch(`/todos/${hexId}`)
+        .send(null)
+        .expect(404)
+        .end(done);
+  });
+});
